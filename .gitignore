@@ -1,2 +1,8 @@
 # Virtual env
 venv
+
+# Secrets file
+secrets.sh
+
+# Py cache
+__pycache__
