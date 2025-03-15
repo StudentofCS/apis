@@ -1,21 +1,21 @@
 {% extends 'base.html' %}
 
 {# TODO: Replace EVENT NAME with the event's name #}
-{% block title %}Event Details | EVENT NAME{% endblock %}
+{% block title %}Event Details | {{ data.name }}{% endblock %}
 
 {% block content %}
 <div class="container">
   <div class="row">
     <div class="col">
       {# TODO: Replace EVENT NAME with the event's name #}
-      <h2>EVENT NAME</h2>
+      <h2>{{ data.name }}</h2>
 
       {#
         TODO: Replace THIS PAGE IS FOR FURTHER STUDY with
         event's description
       #}
       <p>
-        THIS PAGE IS FOR FURTHER STUDY.
+        {{ data.description }}
       </p>
     </div>
   </div>
@@ -26,14 +26,14 @@
         TODO: Replace EVENT IMAGE URL with actual URL to one of the
         event images
       #}
-      <img src="EVENT IMAGE URL">
+      <img src="{{ data['images'][0]['url'] }}">
 
       <p>
         {#
           TODO: Replace EVENT TICKETMASTER URL with URL to event's
           Ticketmaster page
         #}
-        <a href="EVENT TICKETMASTER URL" target="_blank">
+        <a href="{{ data.url }}" target="_blank">
           Go to Ticketmaster page
         </a>
       </p>
@@ -42,7 +42,7 @@
     <div class="col">
       <h3>Start date</h3>
       {# TODO: Replace EVENT START DATE with event's start date #}
-      <p>EVENT START DATE</p>
+      <p>{{ data.dates.start.localDate }}</p>
 
       <h3>Venues</h3>
       <ul>
@@ -52,7 +52,10 @@
 
           Each `li` should contain the name of a venue.
         #}
-        <li>PLACEHOLDER</li>
+
+        {% for venue in data['_embedded']['venues'] %}
+          <li>{{ venue['name'] }}</li>
+        {% endfor %}
       </ul>
 
       <h3>Classifications</h3>
@@ -63,7 +66,12 @@
 
           Each `li` should contain the name of the classification's *genre*.
         #}
-        <li>PLACEHOLDER</li>
+        {% for genre in data['classifications'][0] %}
+          {% set classification=data['classifications'][0][genre]['name'] %}  
+          {% if classification and classification != "Undefined" %}
+            <li>{{ data['classifications'][0][genre]['name'] }}</li>
+          {% endif %}
+        {% endfor %}
       </ul>
     </div>
   </div>
